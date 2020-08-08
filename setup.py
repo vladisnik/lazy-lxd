@@ -15,7 +15,7 @@ install_requires = [
     'halo>=0.0.29',
     'humanize>=2.4.0',
     'PyInquirer>=1.0.3',
-    'pylx>=2.2.11',
+    'pylxd>=2.2.11',
     'python-dateutil>=2.8.1',
     'python-hosts>=1.0.0'
 ]
