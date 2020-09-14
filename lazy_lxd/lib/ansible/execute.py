@@ -25,7 +25,7 @@ def run_ansible_playbook(self, playbook: str) -> tuple:
 
     env = os.environ.copy()
     env.update({
-        'ANSIBLE_SSH_ARGS': '-o IdentitiesOnly=yes',
+        'ANSIBLE_SSH_ARGS': '-o IdentitiesOnly=yes -o StrictHostKeyChecking=no',
         'ANSIBLE_REMOTE_USER': 'root',
         'ANSIBLE_PRIVATE_KEY_FILE': self.ssh_key,
         'ANSIBLE_STDOUT_CALLBACK': 'json'
