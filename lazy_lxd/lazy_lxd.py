@@ -14,6 +14,8 @@ import subprocess
 import logging
 from shutil import which
 
+from lazy_lxd import __version__
+
 from lib.lxd import LXDClient
 from lib.ansible import AnsibleClient
 from lib.keys import SSHKeys
@@ -85,6 +87,10 @@ def parse_option() -> object:
         '-v', '--verbose', dest='debug_level', action='store_true',
         help="Verbose output. Print more information about being committed actions. "
              "Will yellow colored."
+    )
+    parser.add_argument(
+        '--version', action='version', version=__version__,
+        help="Show version and exit."
     )
 
     return parser.parse_args()
