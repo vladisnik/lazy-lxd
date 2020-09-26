@@ -1,6 +1,4 @@
-import os
 import logging
-import json
 
 from .playbook import (
     choose_playbooks,
@@ -12,7 +10,8 @@ from .execute import run_ansible_playbook
 
 class AnsibleClient(object):
     """
-    Client for conversation with Ansible, and running it playbooks to container.
+    Client for conversation with Ansible,
+    and running it playbooks to container.
 
     Args:
         playbooks_path (str): Path to directory with Ansible playbooks
@@ -49,7 +48,8 @@ class AnsibleClient(object):
 
         if not is_exists_playbooks(self.playbooks_path):
             self._log.error(
-                f"Directory {self.playbooks_path} doesn't contains no one y(a)ml file."
+                f"Directory {self.playbooks_path} "
+                "doesn't contains no one y(a)ml file."
             )
             while True:
                 try:
@@ -81,7 +81,9 @@ class AnsibleClient(object):
             status, out, err, command = self.__run_playbook(self, p)
 
             if status > 0:
-                self._log.error(f"Was occurred while running playbook {p}: {err}")
+                self._log.error(
+                    f"Was occurred while running playbook {p}: {err}"
+                )
                 self._log.warning(f"Try execute command yourself: {command}")
 
             else:
@@ -89,6 +91,8 @@ class AnsibleClient(object):
                     self._log.warning(
                         f"Something was failing while executing playbook {p}"
                     )
-                    self._log.warning(f"Try execute command yourself: {command}")
+                    self._log.warning(
+                        f"Try execute command yourself: {command}"
+                    )
                 else:
                     self._log.debug(f"Playbook {p} is completed.")

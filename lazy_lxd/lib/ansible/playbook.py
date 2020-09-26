@@ -32,7 +32,8 @@ def choose_playbooks(path: str) -> list:
 
 def is_exists_playbooks(path: str) -> bool:
     """
-    Check that directory with playbooks contains at least one playbook as y(a)ml file.
+    Check that directory with playbooks contains
+    at least one playbook as y(a)ml file.
 
     Args:
         path (str): Path to directory with Ansible playbooks.
@@ -57,7 +58,9 @@ def redefine_playbooks_path() -> str:
         str: Path to directory with Ansible playbooks.
     """
 
-    path = inquirer.input_text("Type new path to directory with Ansible playbooks")
+    path = inquirer.input_text(
+        "Type new path to directory with Ansible playbooks"
+    )
     if os.path.exists(path):
         return path
     else:

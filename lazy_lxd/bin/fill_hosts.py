@@ -33,8 +33,9 @@ def parse_option() -> object:
     def check_hostname(parser: argparse.ArgumentParser, arg):
         """
         Verify argument from argparse.
-        Hosname shouldn't contains symbols: !, %, [, ], {, }, _, ;, :, <, >, ?, ,, $,
-                                            #, ^, *, (, ), ', ", `, \\, /
+        Hosname shouldn't contains symbols: !, %, [, ], {, }, _, ;, :,
+                                            <, >, ?, ,, $, #, ^, *, (, ),
+                                            ', ", `, \\, /
         """
         forbidden_symbols = [
             '!', '%', '[', ']', '{', '}', '_', ';', ':', '<', '>', '?',
@@ -42,7 +43,9 @@ def parse_option() -> object:
         ]
         for symbol in forbidden_symbols:
             if arg.find(symbol) != -1:
-                parser.error(f"Hostname {arg} contains forbidden symbol {symbol}")
+                parser.error(
+                    f"Hostname {arg} contains forbidden symbol {symbol}"
+                )
 
         return arg
 
@@ -85,7 +88,11 @@ def main():
         hosts_file.add([new_pair])
         hosts_file.write()
     except UnableToWriteHosts:
-        print(f"Unable to write to {hosts_file.hosts_path}", file=sys.stderr, end='')
+        print(
+            f"Unable to write to {hosts_file.hosts_path}",
+            file=sys.stderr,
+            end=''
+        )
         sys.exit(1)
 
 

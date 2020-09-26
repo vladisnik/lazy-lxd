@@ -4,10 +4,12 @@ def create(name: str) -> bool:
 
     Args:
         name (str): Name of ssh keys.
-                    Future naming will <name> for private, and <name>.pub for public key
+                    Future naming will <name> for private,
+                    and <name>.pub for public key
 
     Returns:
-        bool: Status of saving keys operation, True if successful. Otherwise, False.
+        bool: Status of saving keys operation, True if successful.
+              Otherwise, False.
     """
 
     keys = _generate()

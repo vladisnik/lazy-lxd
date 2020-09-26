@@ -28,8 +28,10 @@ class LXDClient():
 
     Args:
         name (str): Name of future LXD container.
-        os_template (str): Name of OS for image from where will create container.
-        os_version (str): Version of requested image. Could be as codename and version.
+        os_template (str): Name of OS for image from
+                           where will create container.
+        os_version (str): Version of requested image.
+                          Could be as codename and version.
     """
 
     def __init__(
@@ -77,7 +79,8 @@ class LXDClient():
 
     def create_container(self) -> None:
         """
-        Create LXD empty container from the existing image using it fingerprint.
+        Create LXD empty container from the existing image
+        using it fingerprint.
         At first, looking for image fingerprint.
         If found more than one requested image, offer choose from list.
         List contains images which fits by requested criteria.
@@ -118,7 +121,9 @@ class LXDClient():
         except pylxd.exceptions.LXDAPIException as e:
             try:
                 if not self.container_is_running:
-                    self._log.debug(f"Restarting container. Occurred exception {e}.")
+                    self._log.debug(
+                        f"Restarting container. Occurred exception {e}."
+                    )
                     restart(self.__container)
             except pylxd.exceptions.LXDAPIException as e:
                 self._log.error(str(e))
@@ -128,7 +133,8 @@ class LXDClient():
         else:
             self.container_ip = get_network_address(self.__container)
             self._log.debug(
-                f"Container {self.container_name} has IP address {self.container_ip}"
+                f"Container {self.container_name} "
+                f"has IP address {self.container_ip}"
             )
 
     def install_openssh(self):
@@ -146,10 +152,13 @@ class LXDClient():
             out, err = run_command(self.__container, install_command)
             if self.image_os == 'centos':
                 install_command += '; service sshd start'
-                out, err = run_command(self.__container, 'service sshd start')
+                out, err = run_command(
+                    self.__container, 'service sshd start'
+                )
         except (RuntimeError, ValueError) as e:
             self._log.error(
-                "Occurred error while installing openssh server into container. "
+                "Occurred error while installing openssh "
+                "server into container. "
                 f"Got exit code {e} while performing "
                 f"'{install_command}' inside container."
             )
@@ -174,11 +183,14 @@ class LXDClient():
             try:
                 command = 'mkdir /root/.ssh; chmod 700 /root/.ssh'
                 out, err = run_command(self.__container, 'mkdir /root/.ssh')
-                out, err = run_command(self.__container, 'chmod 700 /root/.ssh')
+                out, err = run_command(
+                    self.__container, 'chmod 700 /root/.ssh'
+                )
             except (RuntimeError, ValueError) as e:
                 self._log.error(
                     "Occurred error while preparing directories for SSH. "
-                    f"Got exit code {e} while performing '{command}' inside container."
+                    f"Got exit code {e} while performing "
+                    f"'{command}' inside container."
                 )
                 raise SystemExit(1)
             else:
@@ -191,8 +203,10 @@ class LXDClient():
             out, err = run_command(self.__container, command)
         except (RuntimeError, ValueError) as e:
             self._log.error(
-                "Occurred error while write SSH public key to Authorized keys. "
-                f"Got exit code {e} while performing '{command}' inside container."
+                "Occurred error while write SSH public key "
+                "to Authorized keys. "
+                f"Got exit code {e} while performing "
+                f"'{command}' inside container."
             )
             raise SystemExit(1)
 
@@ -239,15 +253,11 @@ class LXDClient():
             "20.04": "focal"
         }
 
-        # TODO: что-то здесь не так. Надо упростить. Оставить только один default.
-        # Все для ubuntu. Проверить что linuxcontainers принимает и номер и codename.
-
         if self.image_os != 'ubuntu' and version != 'bionic':
             return version
         elif self.image_os != 'ubuntu':
             if self.image_os == 'centos':
                 return str(8)  # default centos version
-            # if os != Ubuntu and os version == bionic it shouldn't be
             else:
                 self._log.warning(
                     f"Please enter to version for requested OS {self.image_os}"

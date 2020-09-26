@@ -7,7 +7,8 @@ def input_text(msg: str = "Type something") -> str:
     Ask user to enter text in response to a request input answer
 
     Args:
-        msg (str): Message which display to user. This is request for input text usually.
+        msg (str): Message which display to user.
+                   This is request for input text usually.
 
     Returns:
         str: Text which user entered

@@ -21,7 +21,8 @@ def get_fingerprint(self) -> list:
     Get images list properties by image search os and and it version.
 
     Returns:
-        list: List of dicts contains image properties, uploaded datetime and fingerprint.
+        list: List of dicts contains image properties,
+              uploaded datetime and fingerprint.
     """
 
     images = self._client.images.all()
@@ -88,7 +89,8 @@ def _choose_image(images: list) -> str:
         image_representation = (
             f"OS - {image['os'].capitalize()} | "
             f"Release - {image['release'].capitalize()} | "
-            f"Architecture - {image['architecture']} | Uploaded - {uploaded_diff} ago"
+            f"Architecture - {image['architecture']} | "
+            f"Uploaded - {uploaded_diff} ago"
         )
         images_list.append(image_representation)
 

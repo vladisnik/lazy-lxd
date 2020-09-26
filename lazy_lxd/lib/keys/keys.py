@@ -14,8 +14,10 @@ class SSHKeys(object):
     It provides tools for validating and creating keys.
 
     Args:
-        private_key (BinaryIO): Private part of SSH key as opened file with bytes mode.
-        public_key (BinaryIO): Public part of SSH key as opened file with bytes mode.
+        private_key (BinaryIO): Private part of SSH key as opened file
+                                with bytes mode.
+        public_key (BinaryIO): Public part of SSH key as opened file
+                               with bytes mode.
         container_name (str): Name of container which is beaning creating.
                               Needs as name to creating SSH keys if it needed.
     """
@@ -45,7 +47,8 @@ class SSHKeys(object):
     def __initialize_keys(self, private_key: BinaryIO, public_key: BinaryIO):
         """
         Processing keys obtained from class arguments.
-        Checking their exists, get content and path. Saving it into class properties.
+        Checking their exists, get content and path.
+        Saving it into class properties.
         Validating keys correctness.
         Creating new if keys obtained from arguments is not exists.
 
@@ -59,17 +62,25 @@ class SSHKeys(object):
         if private_key is not None and public_key is None:
             try:
                 self._log.debug(
-                    f"Looking for ssh public key by path {private_key.name}-cert.pub."
+                    "Looking for ssh public key "
+                    f"by path {private_key.name}-cert.pub."
                 )
                 public_key = search_public_key(private_key.name)
-                self._log.debug(f"Found public part of SSH key {public_key.name}")
+                self._log.debug(
+                    f"Found public part of SSH key {public_key.name}"
+                )
             except FileNotFoundError as e:
-                self._log.error(f"Public part of SSH key is not found by path {e}")
+                self._log.error(
+                    f"Public part of SSH key is not found by path {e}"
+                )
 
         if private_key is not None and public_key is not None:
             private_key_content = private_key.read()
             public_key_content = public_key.read()
-            self._keys_is_valid = valid(private_key_content, public_key_content)
+            self._keys_is_valid = valid(
+                private_key_content,
+                public_key_content
+            )
             if not self._keys_is_valid:
                 self._log.error("Keys pair has invalid signature.")
 
@@ -86,7 +97,9 @@ class SSHKeys(object):
                 )
                 return
             else:
-                self._log.debug(f"Creating SSH keys by name {self.container_name}")
+                self._log.debug(
+                    f"Creating SSH keys by name {self.container_name}"
+                )
                 private_key, public_key = create(self.container_name)
 
         # prevent EOF pointer

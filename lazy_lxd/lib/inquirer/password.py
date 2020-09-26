@@ -4,12 +4,16 @@ from .confirm import confirm
 from typing import Callable
 
 
-def password(msg: str = "Your password", validate: Callable[..., bool] = None) -> str:
+def password(
+    msg: str = "Your password",
+    validate: Callable[..., bool] = None
+) -> str:
     """
     Ask user to enter password. It will be hide on the screen by *
 
     Args:
-        msg (str): Message which display to user. This is request for input text usually.
+        msg (str): Message which display to user.
+                   This is request for input text usually.
         validate (callable): Function which will validate entered password.
                              Should return True if successfull, or str if not.
 

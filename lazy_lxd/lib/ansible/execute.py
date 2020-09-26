@@ -18,19 +18,23 @@ def run_ansible_playbook(self, playbook: str) -> tuple:
 
     Returns:
         tuple: Result of running playbook.
-               Exit code, stdout message and error if occurred and executed command.
+               Exit code, stdout message and error if occurred
+               and executed command.
     """
 
     playbook_full_path = os.path.join(self.playbooks_path, playbook)
 
     env = os.environ.copy()
     env.update({
-        'ANSIBLE_SSH_ARGS': '-o IdentitiesOnly=yes -o StrictHostKeyChecking=no',
+        'ANSIBLE_SSH_ARGS': '-o IdentitiesOnly=yes -o '
+                            'StrictHostKeyChecking=no',
         'ANSIBLE_REMOTE_USER': 'root',
         'ANSIBLE_PRIVATE_KEY_FILE': self.ssh_key,
         'ANSIBLE_STDOUT_CALLBACK': 'json'
     })
-    cmd = shlex.split(f'ansible-playbook -i {self.container_host}, {playbook_full_path}')
+    cmd = shlex.split(
+        f'ansible-playbook -i {self.container_host}, {playbook_full_path}'
+    )
 
     process = subprocess.Popen(
         cmd, env=env,
@@ -40,11 +44,16 @@ def run_ansible_playbook(self, playbook: str) -> tuple:
     # build command with argument from env
     shell_cmd = (
         f"ANSIBLE_SSH_ARGS='{env['ANSIBLE_SSH_ARGS']}' {' '.join(cmd[:3])} "
-        f"--private-key {self.ssh_key} -u {env['ANSIBLE_REMOTE_USER']} {cmd[-1]}"
+        f"--private-key {self.ssh_key} -u {env['ANSIBLE_REMOTE_USER']} "
+        f"{cmd[-1]}"
     )
 
     self._log.debug(f"Playbook will executing by command: {shell_cmd}")
-    with Halo(text=f"Running playbook {playbook}...", spinner="dots12", color="blue"):
+    with Halo(
+        text=f"Running playbook {playbook}...",
+        spinner="dots12",
+        color="blue"
+    ):
         out, err = process.communicate()
 
     if len(out.decode()) > 0:

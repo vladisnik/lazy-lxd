@@ -58,11 +58,13 @@ def parse_option() -> object:
              "By default will be generated randomly."
     )
     parser.add_argument(
-        '--os', dest='template', choices=['ubuntu', 'centos'], default='ubuntu',
+        '--os', dest='template', choices=['ubuntu', 'centos'],
+        default='ubuntu',
         help="Name of LXC OS template. Default: ubuntu"
     )
     parser.add_argument(
-        '--release', dest='template_release', metavar='<release>', default='bionic',
+        '--release', dest='template_release', metavar='<release>',
+        default='bionic',
         help="Codename of OS release.  Default: ubuntu - bionic; centos - 8"
     )
     parser.add_argument(
@@ -85,7 +87,8 @@ def parse_option() -> object:
     )
     parser.add_argument(
         '-v', '--verbose', dest='debug_level', action='store_true',
-        help="Verbose output. Print more information about being committed actions. "
+        help="Verbose output. "
+             "Print more information about being committed actions. "
              "Will yellow colored."
     )
     parser.add_argument(
@@ -128,7 +131,8 @@ def check_recommended_program_instace(*program: list) -> None:
         program (list): list of programs names which will to check
 
     Returns:
-        None: Because if required program is not found, script will show warning only.
+        None: Because if required program is not found,
+              script will show warning only.
     """
 
     log = logging.getLogger('lazy_lxd')
@@ -171,7 +175,9 @@ def check_sudo_password(password: str) -> bool:
     return True
 
 
-def filling_hosts(hostname: str, ip: str, password: str, script_path: str) -> bool:
+def filling_hosts(
+        hostname: str, ip: str, password: str, script_path: str
+) -> bool:
     """
     Fill the file /etc/hosts with container hostname and it IP address.
     Running separate script `bin/fill-hosts.py` for that.
@@ -181,7 +187,8 @@ def filling_hosts(hostname: str, ip: str, password: str, script_path: str) -> bo
         hostname (str): Name for 1st script argument.
         ip (str): IP address for 2nd script argument.
         password (str): Password for sudo.
-        script_path (str): Path of main script for looking for fill-hosts script.
+        script_path (str): Path of main script for looking for
+                           fill-hosts script.
 
     Returns:
         bool: True if script executed successfully. Otherwise, False.
@@ -222,7 +229,8 @@ def show_result_info(
         f"{Fore.GREEN}Your container info:{Fore.RESET}\n"
         f"    {Style.BRIGHT}OS:{Style.NORMAL} {os}\n"
         f"    {Style.BRIGHT}OS Version:{Style.NORMAL} {os_version}\n"
-        f"    {Style.BRIGHT}Name of container:{Style.NORMAL} {container_name}\n"
+        f"    {Style.BRIGHT}Name of container:"
+        "{Style.NORMAL} {container_name}\n"
         f"    {Style.BRIGHT}Host:{Style.NORMAL} {container_host}"
     )
 
@@ -285,7 +293,8 @@ def main():
 
     if ssh_keys.disable_ssh:
         show_result_info(
-            lxd.image_os, lxd.image_version, lxd.container_name, lxd.container_ip,
+            lxd.image_os, lxd.image_version,
+            lxd.container_name, lxd.container_ip,
             None, not ssh_keys.disable_ssh
         )
         return
@@ -295,13 +304,17 @@ def main():
 
     # try to fill /etc/hosts with container name and their ip address
     log.info(
-        "For easiest access to container, recommended to fill /etc/hosts file.\n"
+        "For easiest access to container, "
+        "recommended to fill /etc/hosts file.\n"
         "This action needs superuser (sudo) access."
     )
     filled_hosts = inquirer.confirm("Do you want to fill /etc/hosts:")
     if filled_hosts:
         if os.getuid() != 0:
-            password = inquirer.password('Root (sudo) password:', check_sudo_password)
+            password = inquirer.password(
+                'Root (sudo) password:',
+                check_sudo_password
+            )
             container_has_host_info = filling_hosts(
                 lxd.container_name, lxd.container_ip,
                 password, script_path
@@ -330,6 +343,7 @@ def main():
         finally_container_host = lxd.container_ip
 
     show_result_info(
-        lxd.image_os, lxd.image_version, lxd.container_name, finally_container_host,
+        lxd.image_os, lxd.image_version,
+        lxd.container_name, finally_container_host,
         ssh_keys.private_key_path, not ssh_keys.disable_ssh
     )

@@ -83,7 +83,9 @@ def run(container: object) -> bool:
                 if address is not None:
                     break
                 if time.time() > timeout:
-                    raise TimeoutError("The container doesn't receive network too long")
+                    raise TimeoutError(
+                        "The container doesn't receive network too long"
+                    )
                 time.sleep(1)
             return True
     except Exception as e:
@@ -120,7 +122,8 @@ def restart(container: object) -> bool:
         container (object): pylxd container object.
 
     Returns:
-        bool: Return True if container restarted. False if something went wrong.
+        bool: Return True if container restarted.
+              False if something went wrong.
     """
 
     try:
