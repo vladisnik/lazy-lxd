@@ -1,6 +1,6 @@
 colorama==0.4.3
 coolname==1.1.0
-cryptography==41.0.0
+cryptography==41.0.3
 halo==0.0.29
 humanize==2.4.0
 PyInquirer==1.0.3
